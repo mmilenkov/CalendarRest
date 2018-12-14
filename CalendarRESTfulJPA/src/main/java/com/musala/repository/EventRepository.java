@@ -11,13 +11,13 @@ import java.util.List;
 public class EventRepository {
 
     private List<Event> eventList = new LinkedList<Event>();
+    private EntityManagerFactory emf = Persistence.createEntityManagerFactory("myPU");
 
     public List<Event> getEventList() {
         return eventList;
     }
 
     private EntityManager getEntityManager() {
-        EntityManagerFactory emf = Persistence.createEntityManagerFactory("myPU");
         return emf.createEntityManager();
     }
 
@@ -89,7 +89,6 @@ public class EventRepository {
         int day = Integer.valueOf(slice[2]);
         Date initialDate = new Date(year-1900,month-1,day,0,0,0);
         Date secondaryDate = new Date(year-1900,month-1,day,23,59,59);
-
 
         TypedQuery<Event> query = entityManager.createQuery("Select e FROM Event e Where e.startDate BETWEEN ?1 AND ?2",Event.class);
         query.setParameter(1,initialDate);
