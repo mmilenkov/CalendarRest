@@ -3,7 +3,6 @@ package com.musala.view;
 import com.musala.model.Event;
 import com.musala.repository.EventRepository;
 
-import javax.inject.Inject;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -24,7 +23,7 @@ public class EventResource {
 
     @DELETE
     @Path("delete/{eventId}")
-    @Consumes(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
     public Response deleteEvent(@PathParam("eventId") String eventId) {
         eventRepository.removeEvent(Integer.parseInt(eventId));
         return Response.ok().build();
