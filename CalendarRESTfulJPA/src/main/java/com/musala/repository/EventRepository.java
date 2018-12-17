@@ -8,6 +8,7 @@ import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
+@SuppressWarnings("Duplicates")
 public class EventRepository {
 
     private List<Event> eventList = new LinkedList<Event>();
@@ -58,10 +59,19 @@ public class EventRepository {
         entityManager.close();
     }
 
-    public void generateSearchPrintAllEvents() {
+    public Event generateSearchSpecificEvent(int eventId) {
         EntityManager entityManager = getEntityManager();
-        String searchTerm = "SELECT e FROM Event e";
-        TypedQuery<Event> query = entityManager.createQuery(searchTerm,Event.class);
+        TypedQuery<Event> query = entityManager.createQuery("SELECT e FROM Event e WHERE e.eventID = :eventId",Event.class);
+        query.setParameter("eventId",eventId);
+
+        return query.getSingleResult();
+    }
+
+    public void generateSearchPrintAllEvents(int offset, int limit) {
+        EntityManager entityManager = getEntityManager();
+        TypedQuery<Event> query = entityManager.createQuery("SELECT e FROM Event e ORDER BY e.startDate ",Event.class);
+        query.setMaxResults(limit);
+        query.setFirstResult(offset);
         eventList = query.getResultList();
         entityManager.close();
     }
